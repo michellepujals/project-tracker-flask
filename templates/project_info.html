@@ -1,3 +1,24 @@
-{{ title }}
-{{ description }}
-{{ max_grade }}
+Project title : {{ title }} <br>
+Description : {{ description }} <br>
+Max grade : {{ max_grade }}<br>
+
+
+{{ student_github_grade }}
+{% for item in student_github_grade %}
+{{ item[0]}}
+{% endfor %}
+
+
+{% for name in list_of_names %}
+{{ name }}
+{% endfor %}
+
+{% for grade in list_of_grades %}
+{{ grade }}
+{% endfor %}
+
+{% for github_id, value in project_details.items() %}
+{{ value[1]}} {{value[0] }}<br>
+{% endfor %}
+
+

@@ -52,12 +52,33 @@ def student_add():
 @app.route("/project")
 def display_project_info():
     """Display information about a project. 
-    List the title, description, and maximum grade for a project."""
+    List the title, description, and maximum grade for a project.
+
+    Also list students who have done that project."""
 
     title = request.args.get('project')
     title, description, max_grade = hackbright.get_project_by_title(title)
+    student_github_grade = hackbright.get_grades_by_title(title)
+    list_of_github_ids = []
+    list_of_grades = []
+    project_details = {}
+    for item in student_github_grade:
+        github_id = item[0]
+        list_of_github_ids.append(github_id)
+        project_details[github_id] = project_details.get(github_id, [])
+        grade = item[1]
+        list_of_grades.append(grade)
+        project_details[github_id].append(grade)
+    list_of_names = []
+    for github_id in list_of_github_ids:
+        name = hackbright.get_student_by_github(github_id)[0]+' '+hackbright.get_student_by_github(github_id)[1]
+        list_of_names.append(name)
+        project_details[github_id].append(name)
 
-    return render_template("project_info.html", title=title, description=description, max_grade=max_grade)
+
+    return render_template("project_info.html", title=title, description=description, 
+                            max_grade=max_grade, 
+                            project_details=project_details)
 
 
 
